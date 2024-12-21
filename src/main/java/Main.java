@@ -16,10 +16,20 @@ public class Main {
                       //  System.out.println("Program exited"); // we can change it further
                         break;//exit 
                 }
-	//the command not found will print
-        System.out.println(input + ": command not found");
 
-	//then again the "$" printed , that command is not correct reneter it 
+                /**
+                 * 1. input.startsWith("echo "): This checks if the command starts with the echo keyword.
+                 * 2.System.out.println(input.substring(5)): This prints everything after echo (i.e., starting from the 6th character onward). The substring(5) method removes the first 5 characters (echo ) from the input.
+                 * --input.substring(5) extracts the portion of the string input starting from index 5 (i.e., the 6th character) to the end of the string, effectively removing the first 5 characters.
+                 * 3.Command Handling: If the input is not exit or echo, it prints command not found.
+ */
+                if(input.startsWith("echo")){
+                        System.out.println(input.substring(5));
+                  }else{
+	          //the command not found will print
+                  System.out.println(input + ": command not found");
+                  }
+        //then again the "$" printed , that command is not correct reneter it 
         System.out.print("$ ");
 
 	//again ask for another input
