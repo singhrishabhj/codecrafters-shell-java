@@ -13,7 +13,7 @@ public class Main {
 
                 //checks if the input is exit to break the loop
                 if(input.equals("exit 0")){
-                        System.out.println("Program exited"); // we can change it further
+                      //  System.out.println("Program exited"); // we can change it further
                         break;//exit 
                 }
 	//the command not found will print
