@@ -12,7 +12,7 @@ public class Main {
 	while(true){ //if the condition is true
 
                 //checks if the input is exit to break the loop
-                if(input.equals("exit")){
+                if(input.equals("exit 0")){
                         System.out.println("Program exited"); // we can change it further
                         break;//exit 
                 }
@@ -21,7 +21,7 @@ public class Main {
 
 	//then again the "$" printed , that command is not correct reneter it 
         System.out.print("$ ");
-        
+
 	//again ask for another input
 	input = scanner.nextLine();
 	
