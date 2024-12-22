@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import java.util.*;
+import java.io.File; // Missing import for File class
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -10,12 +10,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
-        while(true){ //if the condition is true
+        while (true) { // If the condition is true
 
-            //checks if the input is exit to break the loop
-            if(input.equals("exit 0")){
+            // Checks if the input is exit to break the loop
+            if (input.equals("exit 0")) {
                 //  System.out.println("Program exited"); // we can change it further
-                break;//exit 
+                break; // Exit 
             }
 
             /**
@@ -24,31 +24,51 @@ public class Main {
              * --input.substring(5) extracts the portion of the string input starting from index 5 (i.e., the 6th character) to the end of the string, effectively removing the first 5 characters.
              * 3.Command Handling: If the input is not exit or echo, it prints command not found.
              */
-            if(input.startsWith("echo")){
+            if (input.startsWith("echo")) {
                 // Print everything after 'echo '
                 System.out.println(input.substring(5));
             }
-            //To check if the line starts with 'type' 
-            else if(input.startsWith("type")){
-                String command = input.substring(5); //to take everything after type as a input
+            // To check if the line starts with 'type' 
+            else if (input.startsWith("type")) {
+                String command = input.substring(5); // To take everything after 'type' as input
                 // Check if the command is a builtin
-                if(command.equals("type") || command.equals("echo") || command.equals("exit")) {
+                if (command.equals("type") || command.equals("echo") || command.equals("exit")) {
                     System.out.println(command + " is a shell builtin");
-                }else{
-                    System.out.println(command + ": not found");
+                } else {
+                    // Get PATH environment variable and split it into directories
+                    String path = System.getenv("PATH");
+                    String[] dirs = path.split(":");
+
+                    // Flag to check if the command is found
+                    boolean found = false;
+
+                    // Loop through each directory in PATH
+                    for (String dir : dirs) {
+                        File file = new File(dir, command); // Create a File object for the command in the current directory
+                        
+                        // Check if the file exists and is executable
+                        if (file.exists() && file.canExecute()) {
+                            System.out.println(command + " is " + file.getAbsolutePath());
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // If the command is not found in any directory
+                    if (!found) {
+                        System.out.println(command + ": not found");
+                    }
                 }
-            }
-            else{
-                //the command not found will print
+            } else {
+                // If the command is not recognized (neither echo nor type), print command not found
                 System.out.println(input + ": command not found");
             }
-            //then again the "$" printed , that command is not correct reneter it 
+
+            // Then again the "$" printed, that command is not correct, reenter it 
             System.out.print("$ ");
 
-            //again ask for another input
+            // Again ask for another input
             input = scanner.nextLine();
-
-
         }
     }
 }
