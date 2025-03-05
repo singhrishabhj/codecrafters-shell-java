@@ -20,7 +20,7 @@ public class Main {
             // Handle echo command to print arguments after "echo"
             if (input.startsWith("echo")) {
                 // Extract and print everything after the echo command
-                System.out.println(input.substring(5));
+                System.out.println(input.substring(5).trim());
             } 
             // Handle type command to check if a command is built-in or executable
             else if (input.startsWith("type")) {
@@ -43,7 +43,7 @@ public class Main {
                         if (file.exists() && file.canExecute()) {
                             System.out.println(command + " is " + file.getAbsolutePath());
                             found = true;
-                            break;
+                            break; // Stop searching once the executable is found
                         }
                     }
                     // If the command is not found in any directory
@@ -68,7 +68,7 @@ public class Main {
                     if (file.exists() && file.canExecute()) {
                         found = true;
                         executable = file;
-                        break;
+                        break; // Stop searching once found
                     }
                 }
                 
