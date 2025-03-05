@@ -68,7 +68,7 @@ public class Main {
             System.out.print("$ ");
 
             // Again ask for another input
-            input = scanner.nextLine();
+            input = scanner.nextLine();         
         }
     }
 }
