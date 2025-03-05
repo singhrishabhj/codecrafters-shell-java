@@ -4,21 +4,23 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        // Print initial prompt
+        // Print initial prompt to indicate shell readiness
         System.out.print("$ ");
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); // Create Scanner object to read user input
         String input = scanner.nextLine(); // Read user input
 
         while (true) {
             // Exit condition when input is "exit 0"
             if (input.equals("exit 0")) {
+                // Break the loop to terminate the shell
                 break;
             }
 
             // Handle echo command to print arguments after "echo"
             if (input.startsWith("echo")) {
-                System.out.println(input.substring(5)); // Print everything after "echo "
+                // Extract and print everything after the echo command
+                System.out.println(input.substring(5));
             } 
             // Handle type command to check if a command is built-in or executable
             else if (input.startsWith("type")) {
@@ -28,12 +30,12 @@ public class Main {
                 if (command.equals("type") || command.equals("echo") || command.equals("exit")) {
                     System.out.println(command + " is a shell builtin");
                 } else {
-                    // Get the PATH environment variable
+                    // Get the PATH environment variable to search for executables
                     String path = System.getenv("PATH");
                     String[] dirs = path.split(":"); // Split PATH into directories
                     boolean found = false;
                     
-                    // Loop through each directory in PATH
+                    // Loop through each directory in PATH to locate the command
                     for (String dir : dirs) {
                         File file = new File(dir, command); // Create file object for the command in the directory
                         
@@ -44,7 +46,7 @@ public class Main {
                             break;
                         }
                     }
-                    // If the command is not found
+                    // If the command is not found in any directory
                     if (!found) {
                         System.out.println(command + ": not found");
                     }
@@ -60,6 +62,7 @@ public class Main {
                 String[] dirs = path.split(":");
                 File executable = null;
                 
+                // Search for the executable file in the PATH directories
                 for (String dir : dirs) {
                     File file = new File(dir, command);
                     if (file.exists() && file.canExecute()) {
@@ -71,6 +74,7 @@ public class Main {
                 
                 if (found) {
                     try {
+                        // Create ProcessBuilder to run the external command
                         ProcessBuilder pb = new ProcessBuilder(parts);
                         pb.directory(executable.getParentFile()); // Set directory of executable
                         pb.inheritIO(); // Inherit input/output streams to display command output directly
@@ -80,10 +84,11 @@ public class Main {
                         System.out.println(command + ": execution failed");
                     }
                 } else {
+                    // Print message if command is not found
                     System.out.println(command + ": command not found");
                 }
             }
-            // Print prompt again for next command
+            // Print prompt again for next command input
             System.out.print("$ ");
             input = scanner.nextLine(); // Read next input
         }
