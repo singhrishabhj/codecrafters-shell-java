@@ -22,7 +22,7 @@ public class Main {
             } 
             // Handle type command to check if a command is built-in or executable
             else if (input.startsWith("type")) {
-                String command = input.substring(5); // Extract the command name
+                String command = input.substring(5).trim(); // Extract and trim the command name
                 
                 // Check if the command is a shell built-in
                 if (command.equals("type") || command.equals("echo") || command.equals("exit")) {
@@ -44,7 +44,7 @@ public class Main {
                             break;
                         }
                     }
-                    // Print not found if the command is not found in any directory
+                    // If the command is not found
                     if (!found) {
                         System.out.println(command + ": not found");
                     }
@@ -55,14 +55,16 @@ public class Main {
                 String[] parts = input.split(" "); // Split input into command and arguments
                 String command = parts[0]; // First element is the command name
                 
-                // Check if command exists in PATH before executing
                 boolean found = false;
                 String path = System.getenv("PATH");
                 String[] dirs = path.split(":");
+                File executable = null;
+                
                 for (String dir : dirs) {
                     File file = new File(dir, command);
                     if (file.exists() && file.canExecute()) {
                         found = true;
+                        executable = file;
                         break;
                     }
                 }
@@ -70,6 +72,7 @@ public class Main {
                 if (found) {
                     try {
                         ProcessBuilder pb = new ProcessBuilder(parts);
+                        pb.directory(executable.getParentFile()); // Set directory of executable
                         pb.inheritIO(); // Inherit input/output streams to display command output directly
                         Process process = pb.start(); // Start the external program
                         process.waitFor(); // Wait for the process to finish
@@ -85,5 +88,5 @@ public class Main {
             input = scanner.nextLine(); // Read next input
         }
     }
-} 
+}
 
